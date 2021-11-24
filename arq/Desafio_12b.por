@@ -1,0 +1,104 @@
+programa
+{/* 12. Farmácia:
+Uma grande rede de farmácias do Recife necessita automatizar o serviço de atendimento ao consumidor com um chat bot.
+Você deve implementar um sistema que irá sugerir um medicamento com base no sintoma apresentado pelo usuário.
+Desta forma, o usuário apresenta o sintoma, e o sistema sugere os medicamentos adequados.
+Se o usuário informar um sintoma desconhecido para o sistema, será indicado que ele entre em contato com o farmacêutico.
+Assim que o usuário escolher o medicamento, o sistema deverá exibir seu preço.
+A relação de medicamento, sintoma e preço está exposto na tabela a seguir: (1,5)
+\*/
+	
+inclua biblioteca Texto --> txt
+	
+	funcao inicio()
+	{
+		cadeia sair = "N"
+		cadeia resp
+		inteiro item = 0
+		inteiro itens[8] = {1, 2, 3, 4, 5, 6, 7, 8}
+		cadeia sintomas[8] = {"azia","dor de cabeça","dor muscular","dor de cabeça","gases","dor muscular","enjoo","enjoo"}
+		cadeia nomes[8] = {"Buxin","Cabeçã","Relashow","Leuza","Catapum","Geslado","Dramatic","PaDentrum"}
+		real valores[8] = {2.40, 10.50, 8.25, 8.20, 5.50, 12.80, 11.10, 15.30}
+
+		enquanto(sair == "N"){
+			volta_itens(itens,8)
+			escreva("\nOla! voce poderia me dizer o que esta sentido ? ")
+			leia(resp)
+			se (procura_sintoma(resp, sintomas, nomes, itens, 8) > 0) {
+				escreva("\n\nDeseja ver o preço ?\nDigite o código do item: ")
+				leia(item)
+				se (verifica_item(item,itens) == verdadeiro) {
+					lista_valor(item, itens, nomes, valores,8)	
+				}
+			}senao{
+				escreva("Para este sintoma procure um de nossos farmaceuticos")
+			}
+			escreva("\n\nDeseja sair da pesquisa [S/N]: ")
+			leia(sair)
+			sair = txt.caixa_alta(sair)
+		}
+		fim()
+	}
+		
+//-------------------------------------------------------------------------------------------------------------------
+	funcao volta_itens(inteiro &itens[], inteiro n){
+		para (inteiro i = 0; i < n; i++) {
+			itens[i] = i + 1
+		}
+	}
+	
+//-------------------------------------------------------------------------------------------------------------------
+	funcao inteiro procura_sintoma (cadeia resp,cadeia sintomas[], cadeia nomes[],inteiro &itens[], inteiro n) {	
+		resp = txt.caixa_baixa(resp)
+		inteiro cont = 0
+		escreva("\nProcurando pelo sintoma --> ", resp,"\n")
+		para (inteiro i = 0; i < n; i++){
+			se (txt.posicao_texto(resp, sintomas[i], 0) != -1){
+				escreva("\nCódigo ", itens[i]," - ",nomes[i]," indicado para ", sintomas[i])
+				cont++
+			}senao {
+				itens[i] = 0
+			}
+		}
+		retorne cont
+	}
+
+//-------------------------------------------------------------------------------------------------------------------
+	funcao logico verifica_item(inteiro item, inteiro itens[]) {
+		se (item > 8 ou item <= 0) {
+			escreva("Código inexistente")
+			retorne falso
+			}
+		senao se(itens[item-1] == 0) {
+			escreva("\nItem não indicado para o sintoma")
+			retorne falso
+			}
+		retorne verdadeiro
+	}
+
+//-------------------------------------------------------------------------------------------------------------------
+	funcao lista_valor(inteiro item,inteiro itens[], cadeia nomes[], real valores[], inteiro n ) {
+			escreva("\nCódigo ",item," - ", nomes[item-1], " -> R$ ",valores[item-1])
+		}
+	
+//-------------------------------------------------------------------------------------------------------------------
+	funcao fim(){
+		escreva("\n-----------------------------------------------------------------")
+		escreva("\nAgradessemos a preferência")
+		escreva("\nTenha um bom dia!")
+		escreva("\n--------------------------- FIM ---------------------------------")
+	}
+	
+}
+
+/* $$$ Portugol Studio $$$ 
+ * 
+ * Esta seção do arquivo guarda informações do Portugol Studio.
+ * Você pode apagá-la se estiver utilizando outro editor.
+ * 
+ * @POSICAO-CURSOR = 3146; 
+ * @PONTOS-DE-PARADA = ;
+ * @SIMBOLOS-INSPECIONADOS = ;
+ * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
+ * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = variavel, vetor, matriz, funcao;
+ */
